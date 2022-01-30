@@ -1,0 +1,9 @@
+.name {
+}
+.name img {
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    max-width: 7%;
+    padding: 3px;
+  }

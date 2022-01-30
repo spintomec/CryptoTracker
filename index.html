@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto Tracker</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <link rel="stylesheet" href="index.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>   
+</head>
+
+<body>
+    <table class="table is-narrow is-hoverable" id="leaderboard">
+        <thead>
+            <tr>
+                <th class="rank">#</th>
+                <th class="name">Monnaie
+                </th>
+                <th class="price">Price</th>
+                <th class="market_cap">Market Cap</th>
+                <th class="supply">Supply</th>
+                <th class="volume">Volume</th>
+                <th class="change_24">24%</th>
+            </tr>
+        </thead>
+        <tbody  id=cryptocurrencies>
+        </tbody>
+    </table>
+</body>
+</html>
+
+
+<script>
+        var xhReq = new XMLHttpRequest();
+xhReq.open('GET','https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd', false)
+xhReq.send(null);
+var data = JSON.parse(xhReq.responseText)
+console.log(data)
+
+var cryptocurrencies
+var timerId
+var updatedInterval
+
+function getCryptoInfo(){
+
+    var $list = $("#cryptocurrencies")
+    $list.find(".cryptocurrencies").remove()
+    cryptocurrencies = []
+
+    for(let i=0; i<20; i++){
+    cryptocurrencies.push(
+            {
+        name: data[i].name,
+        symbol: data[i].symbol,
+        image: data[i].image,
+        current_price: data[i].current_price,
+        market_cap: data[i].market_cap,
+        circulating_supply: data[i].circulating_supply,
+        total_volume: data[i].total_volume,
+        percentage_change_24h: data[i].market_cap_change_24h,
+            }
+        )
+    }
+
+    for(var i=0;i<cryptocurrencies.length; i++) {
+        var $item = $(
+            "<tr class='cryptocurrency'>" +
+            "<th class='rank'>" + (i+1) + "</th>" +
+            "<td class='name'>" +"<img src=" + data[i].image +" id='img'>" + cryptocurrencies[i].name + " " + cryptocurrencies[i].symbol.toUpperCase() + "</td>" +
+            "<td class='price'>" + cryptocurrencies[i].current_price + "$</td>" +
+            "<td class='market_cap'>" + cryptocurrencies[i].market_cap + "$</td>" +
+            "<td class='circulating_supply'>" + cryptocurrencies[i].circulating_supply + "</td>" +
+            "<td class='volume_24h'>" + cryptocurrencies[i].total_volume + "$</td>" +
+            "<td class='percentage_change_24h'>" + cryptocurrencies[i].percentage_change_24h + "</td>" +
+            "</tr>"
+        )
+        cryptocurrencies[i].$item = $item
+        $list.append($item)
+
+    }
+}
+getCryptoInfo()
+
+</script>
+
