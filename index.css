@@ -1,9 +1,11 @@
+* {
+  padding: 0;
+}
 .name {
+  display: flex;
 }
 .name img {
-    justify-content: center;
-    align-content: center;
-    align-items: center;
-    max-width: 7%;
+    max-width: 25px;
+    min-width: 25px;
     padding: 3px;
-  }
+}
